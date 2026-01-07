@@ -1,0 +1,6 @@
+{
+  "name": "Calendario de Verano",
+  "short_name": "Verano",
+  "start_url": "/",
+  "display": "standalone"
+}
