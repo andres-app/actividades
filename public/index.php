@@ -23,8 +23,10 @@ $view = $_GET['view'] ?? 'usuario';
 switch ($view) {
 
     case 'admin':
+        require_once BASE_PATH . '/app/Controlador/CtrAdmin.php';
+        $actividades = CtrAdmin::listarActividades();
         require BASE_PATH . '/app/Vista/admin_lista.php';
-        break;    
+        break;
 
     case 'admin_form':
         require BASE_PATH . '/app/Vista/admin_form.php';
@@ -35,6 +37,8 @@ switch ($view) {
         break;
 
     default:
-        require BASE_PATH . '/app/Vista/usuario.php';
+        // 👉 AGENDA DEL NIÑO (DINÁMICA)
+        require_once BASE_PATH . '/app/Controlador/CtrUsuario.php';
+        CtrUsuario::agendaHoy();
         break;
 }

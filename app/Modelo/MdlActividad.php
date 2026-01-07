@@ -1,9 +1,11 @@
 <?php
 require_once BASE_PATH . '/app/Config/Conexion.php';
 
-class MdlActividad {
+class MdlActividad
+{
 
-    public static function guardar($data) {
+    public static function guardar($data)
+    {
         $db = Conexion::conectar();
 
         $sql = "INSERT INTO actividades
@@ -25,9 +27,37 @@ class MdlActividad {
         ]);
     }
 
-    public static function listar() {
+    public static function listar()
+    {
         $db = Conexion::conectar();
-        $stmt = $db->query("SELECT * FROM actividades WHERE estado = 1 ORDER BY hora_inicio");
+
+        $sql = "SELECT * 
+                FROM actividades 
+                WHERE estado = 1
+                ORDER BY hora_inicio";
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+
         return $stmt->fetchAll();
     }
+
+    public static function actividadesHoy($dia) {
+
+        $sql = "SELECT *
+                FROM actividades
+                WHERE estado = 1
+                AND dias LIKE :dia
+                AND fecha_inicio <= CURDATE()
+                AND fecha_fin >= CURDATE()
+                ORDER BY hora_inicio ASC";
+    
+        $stmt = Conexion::conectar()->prepare($sql);
+        $stmt->bindValue(':dia', "%$dia%");
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
 }
